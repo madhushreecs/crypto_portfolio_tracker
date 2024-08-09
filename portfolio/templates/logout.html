@@ -1,0 +1,12 @@
+<form id="logout-form" action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="button" onclick="logoutFunction()">Logout</button>
+</form>
+
+
+
+{% comment %} <!-- templates/registration/logout.html -->
+<form id="logout-form" action="{% url 'logout' %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form> {% endcomment %}

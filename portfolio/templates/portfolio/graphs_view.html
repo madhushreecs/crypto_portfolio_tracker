@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crypto Dashboard</title>
+    <style>
+        .sparkline {
+            width: 100px;
+            height: 30px;
+        }
+        .sparkline path {
+            stroke-width: 2;
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cryptocurrency Dashboard</h1>
+    <div>
+        {% for crypto in crypto_data %}
+            <div style="margin-bottom: 20px;">
+                <h2>{{ crypto.name }}</h2>
+                
+                <!-- Static SVG Sparkline for 7 days -->
+                <svg class="sparkline" viewBox="0 0 100 30">
+                    <path d="M0,20 L10,10 L20,15 L30,5 L40,10 L50,3 L60,15 L70,10 L80,20 L90,5 L100,10" stroke="rgba(75, 192, 192, 1)"></path>
+                </svg>
+                
+                <!-- Static SVG Sparkline for 30 days -->
+                <svg class="sparkline" viewBox="0 0 100 30">
+                    <path d="M0,20 L10,5 L20,15 L30,20 L40,10 L50,15 L60,20 L70,15 L80,5 L90,15 L100,10" stroke="rgba(153, 102, 255, 1)"></path>
+                </svg>
+                
+                <!-- Static SVG Sparkline for all-time -->
+                <svg class="sparkline" viewBox="0 0 100 30">
+                    <path d="M0,25 L10,15 L20,20 L30,5 L40,15 L50,10 L60,20 L70,5 L80,25 L90,10 L100,15" stroke="rgba(255, 159, 64, 1)"></path>
+                </svg>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Graphs</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <h1>Cryptocurrency Graphs</h1>
+
+    <div id="graphs">
+        {% for holding in holdings %}
+        <div>
+            <h2>{{ holding.cryptocurrency }} ({{ holding.symbol }})</h2>
+            <img src="{{ holding.image }}" alt="{{ holding.cryptocurrency }} Image">
+            <canvas id="chart-{{ holding.symbol }}"></canvas>
+        </div>
+        <script>
+            var ctx = document.getElementById('chart-{{ holding.symbol }}').getContext('2d');
+            var chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({ length: {{ holding.historical_prices|length }} }, (_, i) => i + 1),
+                    datasets: [{
+                        label: '{{ holding.cryptocurrency }} Price',
+                        data: {{ holding.historical_prices }},
+                        borderColor: 'rgb(75, 192, 192)',
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: true,
+                            beginAtZero: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        </script>
+        {% endfor %}
+    </div>
+</body>
+</html> -->
+

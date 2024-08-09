@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add to Portfolio</title>
+    <style>
+        /* Clean, modern theme styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8; /* Light blue-grey background color */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center align everything */
+        }
+        .container {
+            max-width: 500px;
+            margin: 50px auto;
+            background-color: #ffffff; /* White background color */
+            padding: 20px;
+            border-radius: 5px;
+            
+        }
+        h1 {
+            text-align: center;
+            color: #0066cc; /* Dark blue color */
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333; /* Dark text color */
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc; /* Light border color */
+            border-radius: 5px;
+            background-color: #f0f4f8; /* Light background color */
+            color: #333; /* Dark text color */
+        }
+        button[type="submit"] {
+            background-color: #0066cc; /* Dark blue background color */
+            color: #fff; /* White text color */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button[type="submit"]:hover {
+            background-color: #004da3; /* Darker blue background color on hover */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Cryptocurrency to Portfolio</h1>
+        <form method="post">
+            {% csrf_token %}
+            <label for="id_cryptocurrency">Cryptocurrency Name:</label>
+            {{ form.cryptocurrency }}
+            <label for="id_symbol">Symbol:</label>
+            {{ form.symbol }}
+            <label for="id_quantity">Quantity:</label>
+            {{ form.quantity }}
+            <label for="id_purchase_price">Purchase Price:</label>
+            {{ form.purchase_price }}
+            <label for="id_purchase_date">Purchase Date:</label>
+            {{ form.purchase_date }}
+            <button type="submit">Add to Portfolio</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Portfolio</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/styles.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #0b0b0b; /* Dark background color for consistency */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+            text-align: center; /* Center align everything */
+        }
+        
+        h1 {
+            align-self: center;
+            color: #ffffff; /* Dark blue color */
+            margin-top: 30px; /* Add some top margin for spacing */
+        }
+        
+        .container {
+            background-color: #f0f4f8; /* Light background color for the container */
+            max-width: 1250px; /* Increase max-width for consistency */
+            margin: 50px auto;
+            padding: 40px; /* Increase padding for consistency */
+            border-radius: 5px;
+            box-shadow: 0 0 20px rgba(134, 134, 134, 0.5); /* Blue light shadow */
+            background-image: url('{% static "portfolio/images/background2.jpg" %}')!important;
+            background-size: 1250px; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the background image */
+    padding: 20px;
+    margin-right: 50; /* Removes any right margin */
+        }
+
+        .crypto-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Align the cards to the left */
+        }
+
+        .crypto-card {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            max-width: 500px; /* Adjust max-width to ensure it doesn't take too much space */
+            border: 1px solid #ddd; /* Light border color for the card */
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0; /* Adds margin between cards */
+            background-color: #ffffff; /* White background color for the card */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for the card */
+            cursor: pointer; /* Add cursor pointer for clickable effect */
+            transition: transform 0.3s ease-in-out;
+            text-align: left; /* Align content to the left */
+        }
+
+        .crypto-card:hover {
+            transform: translateY(-5px); /* Add a slight hover effect */
+        }
+
+        .crypto-image {
+            width: 50px; /* Set the desired width */
+            height: auto; /* Automatically adjust height to maintain aspect ratio */
+            margin-right: 20px;
+        }
+
+        .crypto-info {
+            flex: 1; /* Allow the text to take up remaining space */
+        }
+
+        .crypto-info h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .crypto-info p {
+            margin: 5px 0;
+        }
+
+        .portfolio-button {
+            background-color: #496d73;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            margin-right: auto; /* Push to the left */
+        }
+
+        .portfolio-button:hover {
+            background-color: #4589a0;
+        }
+
+        /* Style for the navbar */
+        nav {
+            background-color: #000000; /* Dark blue background color for navbar */
+            padding: 10px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            position: fixed; /* Make the navbar fixed */
+            top: 0; /* Align it to the top of the page */
+            left: 0; /* Align it to the left edge of the viewport */
+            width: 100%; /* Span the full width of the viewport */
+            z-index: 999;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff; /* White text color for navbar links */
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ffcc00; /* Gold text color on hover */
+        }
+
+        nav #logout-form {
+            margin-left: auto; /* Push to the right */
+        }
+
+        nav #logout-form button {
+           
+            color: #020202;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <nav>
+        
+        <a href="{% url 'holdings_list' %}" class="portfolio-button">Holdings</a>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                <form id="logout-form" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">Logout</button>
+                </form>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav> -->
+    <nav>
+        <a href="{% url 'holdings_list' %}" class="portfolio-button">
+            <i class="fas fa-coins"></i> Holdings
+        </a>
+        <ul>
+            {% if user.is_authenticated %}
+            <li>
+                <form id="logout-form" action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+  
+    <div class="container">
+        <h1>My Portfolio</h1>
+        {% if portfolio %}
+            <div class="crypto-container">
+                {% for item in portfolio %}
+                    <div class="crypto-card">
+                        <img src="{{ item.image }}" alt="{{ item.cryptocurrency }} Image" class="crypto-image"> <!-- Cryptocurrency Image -->
+                        <div class="crypto-info">
+                            <h2>{{ item.cryptocurrency }}</h2> <!-- Cryptocurrency Name -->
+                            <p><strong>Symbol:</strong> {{ item.symbol }}</p>
+                            <p><strong>Quantity:</strong> {{ item.quantity }}</p>
+                            <p><strong>Purchase Price:</strong> ₹{{ item.purchase_price }}</p>
+                            <p><strong>Purchase Date:</strong> {{ item.purchase_date }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No holdings found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

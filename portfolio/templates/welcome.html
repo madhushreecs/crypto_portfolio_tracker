@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Welcome to the Cryptocurrency Portfolio Tracker!</h1>
+  <p>Choose what you'd like to view:</p>
+  <ul>
+    <li><a href="{% url 'holdings_list' %}">View Holdings</a></li>
+    <li><a href="{% url 'portfolio' %}">View Portfolio</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,423 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cryptocurrency Holdings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'portfolio/css/styles.css' %}">
+    <style>
+        body {
+            font-family: monospace;
+            background-color: #09394d;
+            color: #333;
+        }
+
+        .container {
+            background-color: #f0f4f8;
+            margin: 0 auto;
+            max-width: 1250px;
+            padding: 40px;
+        }
+
+        .crypto-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; /* Aligns the cards to the right */
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(20, 87, 233, 0.5);
+    background-image: url('{% static "portfolio/images/background.jpeg" %}')!important;
+
+    background-size: 1250px; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the background image */
+    padding: 20px;
+    margin-right: 0; /* Removes any right margin */
+}
+
+
+.crypto-card {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Adjust max width to ensure it doesn't take too much space */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0; /* Adds margin between cards */
+    background-color: #ffffff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out;
+}
+
+.crypto-card.active {
+    position: fixed;
+    top: 25%;
+    left: 15%;
+    width: 60%; /* Reduce the width of the bulged screen */
+    height: 60%; /* Reduce the height of the bulged screen */
+    z-index: 999;
+    background-color: #f0f4f8;
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+/* Add to your existing <style> block */
+    .search-form {
+    display: inline-flex;
+    align-items: center;
+}
+
+.search-form input {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 5px;
+}
+
+.search-button {
+    background-color: #4589a0;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.search-button i {
+    font-size: 16px;
+}
+
+        .crypto-image {
+            width: 50px;
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .crypto-info {
+            flex: 1; /* Allow the text to take up remaining space */
+        }
+        
+
+        .crypto-info h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .crypto-info p {
+            margin: 5px 0;
+        }
+
+        .crypto-sparkline {
+            width: 150px;
+            height: 50px;
+        }
+
+        /* .crypto-card.active {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            background-color: #f0f4f8;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto;
+            flex-direction: column;
+        }
+
+        .crypto-card.active .crypto-image {
+            width: 200px;
+        } */
+
+        .crypto-card.active .crypto-info {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .details {
+            display: none;
+        }
+
+        .crypto-card.active .details {
+            display: block;
+        }
+        .portfolio-button {
+    background-color: #496d73; /* My Portfolio button color */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    margin-right: 10px; /* Add margin to the right of the Portfolio button */
+}
+
+.portfolio-button:hover {
+    background-color: #4589a0; /* Hover color for My Portfolio */
+}
+
+.news-button {
+    background-color: #496d73; /* News button color (change as desired) */
+    color: white;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.news-button:hover {
+    background-color: #4589a0; /* Hover color for News */
+}
+
+
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+            color: #333;
+            font-size: 24px;
+        }
+
+        nav {
+            background-color: #000000;
+            padding: 10px 20px;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            position: fixed; /* Make the navbar fixed */
+             top: 0; /* Align it to the top of the page */
+             left: 0; /* Align it to the left edge of the viewport */
+             width: 97.4%; /* Make sure it spans the full width of the viewport */
+            z-index: 999;
+        }
+
+        nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #ddd;
+        }
+
+        nav ul li:last-child {
+            margin-right: 0;
+        }
+        .portfolio-button i {
+    margin-right: 8px; /* Adjust spacing between icon and text */
+    font-size: 16px; /* Adjust icon size */
+}
+
+
+        .portfolio-button {
+            background-color: #496d73;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .portfolio-button:hover {
+            background-color: #4589a0;
+        }
+
+        #logout-form {
+            display: inline-block;
+        }
+
+        #logout-form button {
+            
+            color:  #496d73;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        h1{
+            text-align: center;
+        }
+        
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        function toggleCard(cardId) {
+            var card = document.getElementById(cardId);
+            card.classList.toggle("active");
+            if (card.classList.contains("active")) {
+                createSparkline(cardId);
+            }
+        }
+
+        function closeCard(cardId) {
+            var card = document.getElementById(cardId);
+            card.classList.remove("active");
+        }
+
+        function stopPropagation(event) {
+            event.stopPropagation();
+        }
+
+        function createSparkline(cardId) {
+            const ctx = document.getElementById('sparkline-' + cardId).getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array.from({length: 7}, (_, i) => i + 1),
+                    datasets: [{
+                        data: JSON.parse(document.getElementById('sparkline-data-' + cardId).textContent),
+                        borderColor: '#0066cc',
+                        backgroundColor: 'rgba(0, 102, 204, 0.2)',
+                        borderWidth: 2,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            display: false
+                        },
+                        y: {
+                            display: false
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+    <!-- <nav>
+        
+        <a href="{% url 'portfolio' %}" class="portfolio-button">My Portfolio</a>
+        <ul>
+            {% if user.is_authenticated %}
+                <li id="logout-form">
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+        </ul>
+    </nav> -->
+    <nav>
+        <div class="left buttons">
+            <a href="{% url 'portfolio' %}" class="portfolio-button">
+                <i class="fas fa-user"></i> My Portfolio
+            </a>
+            <a href="https://cryptoslate.com/" target="_blank" class="news-button">
+                <i class="fas fa-newspaper"></i> News
+            </a>
+        </div>
+        <ul>
+            <li>
+                <form method="get" action="{% url 'holdings_list' %}" class="search-form">
+                    {{ search_form.query }}
+                    <button type="submit" class="search-button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </form>
+            </li>
+            {% if user.is_authenticated %}
+            <li id="logout-form">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="auth-button">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </form>
+            </li>
+            {% else %}
+            <li>
+                <a href="{% url 'login' %}" class="auth-button">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'register' %}" class="auth-button">
+                    <i class="fas fa-user-plus"></i> Register
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    
+    
+    
+    <div class="container">
+        <h1>Cryptocurrencies</h1>
+        <div class="crypto-container">
+            {% if holdings %}
+                {% for holding in holdings %}
+                    <div id="{{ holding.symbol }}" class="crypto-card" onclick="toggleCard('{{ holding.symbol }}')">
+                        <img src="{{ holding.image }}" alt="{{ holding.cryptocurrency }} Image" class="crypto-image">
+                        <div class="crypto-info">
+                            <h2>{{ holding.cryptocurrency }}</h2>
+                            <p><strong>Symbol:</strong> {{ holding.symbol }}</p>
+                            <p><strong>Current Price:</strong> ₹{{ holding.current_price }}</p>
+                        </div>
+                        <canvas id="sparkline-{{ holding.symbol }}" class="crypto-sparkline"></canvas>
+                        <script type="application/json" id="sparkline-data-{{ holding.symbol }}">
+                            {{ holding.sparkline | safe }}
+                        </script>
+                        <div class="details">
+                            <p><strong>Market Cap:</strong> ₹{{ holding.market_cap }}</p>
+                            <p><strong>Market Cap Rank:</strong> {{ holding.market_cap_rank }}</p>
+                            <p><strong>Fully Diluted Valuation:</strong> ₹{{ holding.fully_diluted_valuation }}</p>
+                            <p><strong>Total Volume:</strong> ₹{{ holding.total_volume }}</p>
+                            <form action="{% url 'add_to_portfolio' %}" method="post">
+                                {% csrf_token %}
+                                <input type="hidden" name="image" value="{{ holding.image }}">
+                                <input type="hidden" name="cryptocurrency" value="{{ holding.cryptocurrency }}">
+                                <input type="hidden" name="symbol" value="{{ holding.symbol }}">
+                                <input type="hidden" name="current_price" value="{{ holding.current_price }}">
+                                <input type="date" name="purchase_date" onclick="stopPropagation(event)">
+                                <input type="number" name="quantity" placeholder="Quantity" min="0" step="0.01" required onclick="stopPropagation(event)">
+                                <input type="number" name="purchase_price" placeholder="Purchase Price" min="0" step="0.01" required onclick="stopPropagation(event)">
+                                <button type="submit">Add to Portfolio</button>
+                            </form>
+                            <span class="close-button" onclick="closeCard('{{ holding.symbol }}')">&times;</span>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No holdings found.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+
+add another button similar to 'my portfolio ' button in the nav bar with 'news' glyphicon ,which redirects you to this news website -CryptoSlate - https://cryptoslate.com/
